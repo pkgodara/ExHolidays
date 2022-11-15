@@ -47,7 +47,8 @@ defmodule Holidays.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:holidefs, "~> 0.3"},
       {:icalendar, "~> 1.1"},
-      {:redis_connection_pool, "~> 0.1.6"}
+      {:redis_connection_pool, "~> 0.1.6"},
+      {:mox, "~> 1.0", only: :test}
     ]
   end
 
