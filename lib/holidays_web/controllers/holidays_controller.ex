@@ -5,11 +5,10 @@ defmodule HolidaysWeb.HolidaysController do
     with {:ok, holidays} <- Holidays.get_by_country(country, start_date, end_date) do
       render(conn, "holidays.json", %{holidays: holidays})
     end
-
-    # TODO :: Error handling
   end
 
-  def create(conn, %{"country" => country, "date" => date, "name" => name}) do
+  def create(conn, %{"country" => country, "date" => date, "name" => name})
+      when is_binary(name) and is_binary(country) and is_binary(date) do
     with {:ok, holiday} <- Holidays.add_holiday(country, date, name) do
       render(conn, "holiday.json", %{holiday: holiday})
     end

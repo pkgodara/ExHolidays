@@ -24,6 +24,8 @@ defmodule HolidaysWeb do
       import Plug.Conn
       import HolidaysWeb.Gettext
       alias HolidaysWeb.Router.Helpers, as: Routes
+
+      action_fallback HolidaysWeb.FallbackController
     end
   end
 

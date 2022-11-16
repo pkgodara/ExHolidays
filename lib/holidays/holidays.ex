@@ -11,7 +11,8 @@ defmodule Holidays do
   @doc """
   Date in format 'YYYY-MM-DD'
 
-  For same name, if multiple manual holidays are added, returns the highest date
+  For same name, if multiple manual holidays are added, returns the highest date.
+  Results ordered by ascending dates.
   """
   def get_by_country(country, start_dt, end_dt) do
     with {:ok, start_dt} <- Date.from_iso8601(start_dt),
@@ -28,10 +29,11 @@ defmodule Holidays do
   end
 
   @doc """
-  Example -
+  Generates ics file content from given holidays list
 
+  Example -
   {:ok, holidays} = Holidays.get_by_country("ee", "2022-01-01", "2022-11-01")
-  Holidays.to_ical holidays
+  Holidays.to_ical(holidays)
   """
   def to_ical(holidays) when is_list(holidays) do
     events = to_ical_events(holidays)
@@ -60,10 +62,6 @@ defmodule Holidays do
       %ICalendar.Event{summary: name, dtstart: {date, @start_time}, dtend: {date, @end_time}}
     end)
   end
-
-  # defp validate_locale(country) do
-  #   Map.has_key?(Holidefs.locales(), String.to_existing_atom(country))
-  # end
 
   defp build_holiday(country, date, name) do
     with {year, _mm, _dd} <- Date.to_erl(date),
