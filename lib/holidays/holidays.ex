@@ -3,7 +3,7 @@ defmodule Holidays do
   Holidays context.
   """
 
-  alias Holidays.Redis
+  alias Holidays.Store
 
   @start_time {00, 00, 00}
   @end_time {23, 59, 59}
@@ -18,7 +18,7 @@ defmodule Holidays do
     with {:ok, start_dt} <- Date.from_iso8601(start_dt),
          {:ok, end_dt} <- Date.from_iso8601(end_dt),
          {:ok, holidefs} <- Holidefs.between(country, start_dt, end_dt),
-         {:ok, manual} <- Redis.get_between(country, start_dt, end_dt) do
+         {:ok, manual} <- Store.get_between(country, start_dt, end_dt) do
       holidays =
         (manual ++ holidefs)
         |> Enum.uniq_by(& &1.uid)
@@ -50,7 +50,7 @@ defmodule Holidays do
     with name <- String.trim(name),
          {:ok, date} <- Date.from_iso8601(date),
          {:ok, holiday} <- build_holiday(country, date, name),
-         {:ok, true} <- Redis.add(country, holiday) do
+         {:ok, true} <- Store.add(country, holiday) do
       {:ok, holiday}
     end
   end

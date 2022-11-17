@@ -1,21 +1,9 @@
-defmodule Holidays.Redis do
-  @moduledoc false
+defmodule Holidays.Store.Redis do
+  @moduledoc """
+  Redis implementation
+  """
 
-  @callback add(country :: String.t(), event :: map()) :: {:ok, true} | {:error, any()}
-  @callback get_between(country :: String.t(), start_date :: Date.t(), end_date :: Date.t()) ::
-              {:ok, List.t()} | {:error, any()}
-
-  # Proxies
-  def add(country, event), do: impl().add(country, event)
-
-  def get_between(country, start_date, end_date),
-    do: impl().get_between(country, start_date, end_date)
-
-  defp impl(), do: Application.get_env(:holidays, :redis_impl, Holidays.Redis.Default)
-end
-
-defmodule Holidays.Redis.Default do
-  @moduledoc false
+  @behaviour Holidays.Store
 
   def add(country, %{date: date, name: _name} = event) do
     score = Date.to_gregorian_days(date)

@@ -6,7 +6,7 @@ defmodule HolidaysWeb.PageControllerTest do
 
   describe "/index" do
     test "successfully returns holidays in range", %{conn: conn} do
-      expect(RedisMock, :get_between, fn _, _, _ -> {:ok, []} end)
+      expect(StoreMock, :get_between, fn _, _, _ -> {:ok, []} end)
 
       query = %{country: "ee", start_date: "2022-08-01", end_date: "2022-08-30"}
       url = Routes.holidays_path(conn, :index, query)
@@ -25,7 +25,7 @@ defmodule HolidaysWeb.PageControllerTest do
       date = "2022-11-15"
       name = "some_nm"
 
-      expect(RedisMock, :add, fn ^country, _event -> {:ok, true} end)
+      expect(StoreMock, :add, fn ^country, _event -> {:ok, true} end)
 
       params = %{country: country, date: date, name: name}
       conn = post(conn, Routes.holidays_path(conn, :create), params)

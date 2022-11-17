@@ -1,1 +1,1 @@
-Mox.defmock(RedisMock, for: Holidays.Redis)
+Mox.defmock(StoreMock, for: Holidays.Store)

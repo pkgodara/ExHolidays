@@ -6,7 +6,7 @@ defmodule Holidays.HolidaysTest do
 
   describe "get_by_country/3" do
     test "successfully get holidays" do
-      expect(RedisMock, :get_between, fn _, _, _ -> {:ok, []} end)
+      expect(StoreMock, :get_between, fn _, _, _ -> {:ok, []} end)
 
       assert {:ok, holidays} = Holidays.get_by_country("ee", "2022-08-01", "2022-08-30")
 
@@ -29,7 +29,7 @@ defmodule Holidays.HolidaysTest do
         uid: "ee-2022-25b87ed2738c35b6ac61ae054733cavd"
       }
 
-      expect(RedisMock, :get_between, fn _, _, _ -> {:ok, [manual]} end)
+      expect(StoreMock, :get_between, fn _, _, _ -> {:ok, [manual]} end)
 
       assert {:ok, holidays} = Holidays.get_by_country("ee", "2022-08-01", "2022-08-30")
 
@@ -61,7 +61,7 @@ defmodule Holidays.HolidaysTest do
         uid: "ee-2022-25b87ed2738c35b6ac61ae054733c359"
       }
 
-      expect(RedisMock, :get_between, fn _, _, _ -> {:ok, [manual1, manual2]} end)
+      expect(StoreMock, :get_between, fn _, _, _ -> {:ok, [manual1, manual2]} end)
 
       assert {:ok, holidays} = Holidays.get_by_country("ee", "2022-08-01", "2022-08-30")
 
@@ -81,7 +81,7 @@ defmodule Holidays.HolidaysTest do
       date = "2022-11-15"
       name = "some_nm"
 
-      expect(RedisMock, :add, fn ^country, _event -> {:ok, true} end)
+      expect(StoreMock, :add, fn ^country, _event -> {:ok, true} end)
 
       assert {:ok, holiday} = Holidays.add_holiday(country, date, name)
       assert %{name: ^name} = holiday
@@ -94,7 +94,7 @@ defmodule Holidays.HolidaysTest do
       date3 = "3033-01-01"
       name = "some_nm"
 
-      expect(RedisMock, :add, 3, fn ^country, _event -> {:ok, true} end)
+      expect(StoreMock, :add, 3, fn ^country, _event -> {:ok, true} end)
 
       assert {:ok, holiday} = Holidays.add_holiday(country, date1, name)
       assert %{name: ^name, uid: uid} = holiday
